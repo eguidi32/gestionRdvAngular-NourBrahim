@@ -80,42 +80,39 @@ export interface DemandeListeRVModel {
     specialite: SpecialiteModel;
 }
 
-export enum SpecialiteModel {
-  CARDIOLOGIE = 'CARDIOLOGIE',
-  DERMATOLOGIE = 'DERMATOLOGIE',
-  NEUROLOGIE = 'NEUROLOGIE',
-  PEDIATRIE = 'PEDIATRIE',
-  OPHTALMOLOGIE = 'OPHTALMOLOGIE'
+export type SpecialiteModel = 
+    | 'Cardiologie'
+    | 'Dermatologie'
+    | 'Neurologie'
+    | 'Pédiatrie'
+    | 'Orthopédie'
+    | 'Gynécologie'
+    | 'Ophtalmologie'
+    | 'Psychiatrie'
+    | 'Radiologie'
+    | 'Urologie';
+
+export type StatutDemandeModel =
+    | 'En attente'
+    | 'Acceptée'
+    | 'Refusée'
+
+export interface DemandeRVFilterModel {
+  specialite?: SpecialiteModel|''; // Filtre optionnel pour la spécialité
+  statut?: StatutDemandeModel; // Filtre optionnel pour le statut
+  page?: number; // Page actuelle pour la pagination
+  size?: number; // Nombre d'items par page pour la pagination
 }
 
-export enum StatutDemandeModel {
-  EN_ATTENTE = 'EN_ATTENTE',
-  ACCEPTER = 'ACCEPTER',
-  REFUSER = 'REFUSER'
+export interface DemandeListeRVResponseModel {
+  data: DemandeListeRVModel[];
+  totalPages: number;
+  currentPage: number;
+  totalItems: number;
+  pages: number[];
+  size: number;
 }
-
-// export type SpecialiteModel = 
-//     | 'Cardiologie'
-//     | 'Dermatologie'
-//     | 'Neurologie'
-//     | 'Pédiatrie'
-//     | 'Orthopédie'
-//     | 'Gynécologie'
-//     | 'Ophtalmologie'
-//     | 'Psychiatrie'
-//     | 'Radiologie'
-//     | 'Urologie';
-
-// export type StatutDemandeModel =
-//     | 'En attente'
-//     | 'Acceptée'
-//     | 'Refusée'
-
-// export interface DemandeRVFilterModel {
-//     specialite?: SpecialiteModel|''; // Filtre optionnel pour la spécialité
-//     statut?: StatutDemandeModel; // Filtre optionnel pour le statut
-// }
-
+   
 // let filter1 : DemandeRVFilterModel = {
 //     specialite: 'Cardiologie',
 //     statut: 'En attente'

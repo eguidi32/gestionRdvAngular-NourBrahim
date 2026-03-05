@@ -1,25 +1,36 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { DemandeListeRVModel,StatutDemandeModel,SpecialiteModel } from '../../models/demande.model';
+import { DemandeListeRVModel, DemandeListeRVResponseModel, DemandeRVFilterModel,} from '../../models/demande.model';
+import { DemandeService } from '../services/demande.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-list-demande',
-  imports: [RouterLink],
+  imports: [RouterLink, FormsModule],
   templateUrl: './list-demande.component.html',
   styleUrl: './list-demande.component.css'
 })
-export class ListDemandeComponent {
+export class ListDemandeComponent implements OnInit {
   title = "Mes demandes de rendez-vous";
-  // onTitleClick(arg: string): void {
-  //   alert("Vous avez cliqué sur le titre : " + arg);
-  // }
-  
-  demandes : DemandeListeRVModel[] = [
-    { id: 1, dateDemande: '2024-07-01', heure: '10:00', statut: StatutDemandeModel.EN_ATTENTE, specialite: SpecialiteModel.CARDIOLOGIE },
-    { id: 2, dateDemande: '2024-07-05', heure: '14:30', statut: StatutDemandeModel.ACCEPTER, specialite: SpecialiteModel.DERMATOLOGIE },
-    { id: 3, dateDemande: '2024-07-10', heure: '16:45', statut: StatutDemandeModel.REFUSER, specialite: SpecialiteModel.NEUROLOGIE }
-  ];
+  demandesResponse? : DemandeListeRVResponseModel;
 
+  filter:DemandeRVFilterModel = {
+    statut: 'En attente',
+    specialite: ''
+  };
+  constructor(private demandeService: DemandeService) {}
 
+  ngOnInit(): void {
+    this.loadDemandes();
+  }
+  onFilterStatusChange(): void {
+    this.loadDemandes();
+  }
 
+  private loadDemandes(): void {
+    this.demandesResponse = this.demandeService.getDemandesRv(this.filter);
+  }
+  onFilterSpecialiteChange(): void {
+    this.loadDemandes();
+  }
 }
