@@ -11,6 +11,11 @@ export class DemandeService {
   constructor() { }
 
   public getDemandesRv(filterDemande:DemandeRVFilterModel): DemandeListeRVResponseModel {
+    // Simuler un délai de réponse du backend
+    setTimeout(() => {
+      console.log("Appel au backend : ");
+    }, 5000);
+
     let demandes = [...MOCK_DEMANDES];
     if (filterDemande.statut) {
       demandes = demandes.filter(d => d.statut === filterDemande.statut);

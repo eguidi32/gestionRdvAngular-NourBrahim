@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { DemandeListeRVModel, DemandeListeRVResponseModel, DemandeRVFilterModel,} from '../../models/demande.model';
+import { DemandeListeRVResponseModel, DemandeRVFilterModel,} from '../../models/demande.model';
 import { DemandeService } from '../services/demande.service';
 import { FormsModule } from '@angular/forms';
 
@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './list-demande.component.html',
   styleUrl: './list-demande.component.css'
 })
-export class ListDemandeComponent implements OnInit {
+export class ListDemandeComponent implements OnInit, OnDestroy {
   title = "Mes demandes de rendez-vous";
   demandesResponse? : DemandeListeRVResponseModel;
 
@@ -18,17 +18,20 @@ export class ListDemandeComponent implements OnInit {
     statut: 'En attente',
     specialite: ''
   };
-  constructor(private demandeService: DemandeService) {}
+  constructor(private demandeService: DemandeService) {
 
+  }
+  ngOnDestroy(): void {
+    alert("ListDemandeComponent est détruit");
+  }
+  private loadDemandes(): void {
+    this.demandesResponse = this.demandeService.getDemandesRv(this.filter);
+  }
   ngOnInit(): void {
     this.loadDemandes();
   }
   onFilterStatusChange(): void {
     this.loadDemandes();
-  }
-
-  private loadDemandes(): void {
-    this.demandesResponse = this.demandeService.getDemandesRv(this.filter);
   }
   onFilterSpecialiteChange(): void {
     this.loadDemandes();
