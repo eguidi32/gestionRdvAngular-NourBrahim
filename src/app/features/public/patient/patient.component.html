@@ -1,36 +1,49 @@
 <div class="container-fluid py-4">
-  <div class="row">
-    <!-- Formulaire principal -->
-    <div class="col-lg-8">
+  <div class="row g-4 align-items-start">
+    <div class="col-12 col-lg-8">
       <div class="card border-0 shadow-sm">
         <div class="card-body p-4">
-          <!-- Titre -->
           <h1 class="h4 mb-4">
-            <i class="fas fa-user-plus me-2"></i>
+            <i class="bi bi-person-plus me-2"></i>
             Créer un Nouveau Patient
           </h1>
 
-          <form>
+          @if(messageSuccess) {
+            <div class="alert alert-success">
+              {{ messageSuccess }}
+            </div>
+          }
+
+          <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
             <div class="row">
-              <!-- Numéro Patient -->
               <div class="col-md-6 mb-3">
                 <label for="numeroPatient" class="form-label">
-                  <i class="fas fa-hashtag me-1"></i>
+                  <i class="bi bi-hash me-1"></i>
                   Numéro Patient
                 </label>
                 <input
                   type="text"
                   class="form-control"
                   id="numeroPatient"
-                  value="PAT-001"
-                  readonly
+                  formControlName="numero"
+                  [ngClass]="{
+                    'is-invalid': isFieldInvalid('numero'),
+                    'is-valid': !isFieldInvalid('numero')
+                  }"
                 />
+                @if(isFieldInvalid('numero')) {
+                  @if(f['numero'].errors?.['required']) {
+                    <div class="text-danger small mt-1">Le numéro patient est requis</div>
+                  }
+                  @if(f['numero'].errors?.['minlength']) {
+                    <div class="text-danger small mt-1">Le numéro patient a un nbre de caractères min</div>
+                  }
+                }
               </div>
 
-              <!-- Nom -->
               <div class="col-md-6 mb-3">
                 <label for="nom" class="form-label">
-                  <i class="fas fa-user me-1"></i>
+                  <i class="bi bi-person me-1"></i>
                   Nom
                 </label>
                 <input
@@ -38,13 +51,22 @@
                   class="form-control"
                   id="nom"
                   placeholder="Dupont"
+                  formControlName="nom"
+                  [ngClass]="{
+                    'is-invalid': isFieldInvalid('nom'),
+                    'is-valid': !isFieldInvalid('nom')
+                  }"
                 />
+                @if(isFieldInvalid('nom')) {
+                  @if(f['nom'].errors?.['required']) {
+                    <div class="text-danger small mt-1">Le nom est requis</div>
+                  }
+                }
               </div>
 
-              <!-- Prénom -->
               <div class="col-md-6 mb-3">
                 <label for="prenom" class="form-label">
-                  <i class="fas fa-user me-1"></i>
+                  <i class="bi bi-person me-1"></i>
                   Prénom
                 </label>
                 <input
@@ -52,13 +74,22 @@
                   class="form-control"
                   id="prenom"
                   placeholder="Jean"
+                  formControlName="prenom"
+                  [ngClass]="{
+                    'is-invalid': isFieldInvalid('prenom'),
+                    'is-valid': !isFieldInvalid('prenom')
+                  }"
                 />
+                @if(isFieldInvalid('prenom')) {
+                  @if(f['prenom'].errors?.['required']) {
+                    <div class="text-danger small mt-1">Le prénom est requis</div>
+                  }
+                }
               </div>
 
-              <!-- Téléphone -->
               <div class="col-md-6 mb-3">
                 <label for="telephone" class="form-label">
-                  <i class="fas fa-phone me-1"></i>
+                  <i class="bi bi-telephone me-1"></i>
                   Téléphone
                 </label>
                 <input
@@ -66,13 +97,22 @@
                   class="form-control"
                   id="telephone"
                   placeholder="+221 77 123 45 67"
+                  formControlName="telephone"
+                  [ngClass]="{
+                    'is-invalid': isFieldInvalid('telephone'),
+                    'is-valid': !isFieldInvalid('telephone')
+                  }"
                 />
+                @if(isFieldInvalid('telephone')) {
+                  @if(f['telephone'].errors?.['required']) {
+                    <div class="text-danger small mt-1">Le téléphone est requis</div>
+                  }
+                }
               </div>
 
-              <!-- Adresse -->
               <div class="col-12 mb-3">
                 <label for="adresse" class="form-label">
-                  <i class="fas fa-map-marker-alt me-1"></i>
+                  <i class="bi bi-geo-alt me-1"></i>
                   Adresse
                 </label>
                 <textarea
@@ -80,13 +120,22 @@
                   id="adresse"
                   rows="2"
                   placeholder="Rue, Code postal, Ville"
+                  formControlName="adresse"
+                  [ngClass]="{
+                    'is-invalid': isFieldInvalid('adresse'),
+                    'is-valid': !isFieldInvalid('adresse')
+                  }"
                 ></textarea>
+                @if(isFieldInvalid('adresse')) {
+                  @if(f['adresse'].errors?.['required']) {
+                    <div class="text-danger small mt-1">L'adresse est requise</div>
+                  }
+                }
               </div>
 
-              <!-- Antécédents Médicaux -->
               <div class="col-12 mb-3">
                 <label for="antecedents" class="form-label">
-                  <i class="fas fa-notes-medical me-1"></i>
+                  <i class="bi bi-clipboard2-pulse me-1"></i>
                   Antécédents Médicaux
                 </label>
                 <textarea
@@ -94,18 +143,18 @@
                   id="antecedents"
                   rows="4"
                   placeholder="Décrivez vos antécédents médicaux, allergies, maladies chroniques..."
+                  formControlName="antecedents"
                 ></textarea>
               </div>
             </div>
 
-            <!-- Boutons d'action -->
             <div class="d-flex gap-2 justify-content-end mt-4">
-              <button type="button" class="btn btn-secondary">
-                <i class="fas fa-times me-1"></i>
+              <button type="button" class="btn btn-secondary" (click)="onReset()">
+                <i class="bi bi-x-lg me-1"></i>
                 Annuler
               </button>
-              <button type="submit" class="btn btn-primary">
-                <i class="fas fa-check me-1"></i>
+              <button type="submit" class="btn btn-primary" [disabled]="patientForm.invalid">
+                <i class="bi bi-check-lg me-1"></i>
                 Créer Patient
               </button>
             </div>
@@ -114,41 +163,24 @@
       </div>
     </div>
 
-    <!-- Panneau d'informations -->
-    <div class="col-lg-4">
+    <div class="col-12 col-lg-4">
       <div class="card border-0 border-start border-primary border-4 bg-light">
         <div class="card-body p-4">
           <h5 class="card-title">
-            <i class="fas fa-info-circle text-primary me-2"></i>
+            <i class="bi bi-info-circle text-primary me-2"></i>
             Informations
           </h5>
           <p class="card-text text-muted small mb-3">
-            Veuillez remplir tous les champs avec les informations correctes du
-            patient.
+            Veuillez remplir tous les champs avec les informations correctes du patient.
           </p>
 
           <h6 class="fw-semibold mb-3">Champs requis:</h6>
-          <ul class="list-unstyled">
-            <li class="mb-2">
-              <i class="fas fa-check-circle text-success me-2"></i>
-              <span class="text-muted">Numéro Patient</span>
-            </li>
-            <li class="mb-2">
-              <i class="fas fa-check-circle text-success me-2"></i>
-              <span class="text-muted">Nom</span>
-            </li>
-            <li class="mb-2">
-              <i class="fas fa-check-circle text-success me-2"></i>
-              <span class="text-muted">Prénom</span>
-            </li>
-            <li class="mb-2">
-              <i class="fas fa-check-circle text-success me-2"></i>
-              <span class="text-muted">Téléphone</span>
-            </li>
-            <li class="mb-2">
-              <i class="fas fa-check-circle text-success me-2"></i>
-              <span class="text-muted">Adresse</span>
-            </li>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i><span class="text-muted">Numéro Patient</span></li>
+            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i><span class="text-muted">Nom</span></li>
+            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i><span class="text-muted">Prénom</span></li>
+            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i><span class="text-muted">Téléphone</span></li>
+            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i><span class="text-muted">Adresse</span></li>
           </ul>
         </div>
       </div>

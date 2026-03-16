@@ -1,4 +1,4 @@
-import {DemandeListeRVModel } from '../features/private/models/demande.model';
+import { DemandeListeRVModel } from '@models';
 
 // base de données simulée pour les demandes de rendez-vous, 
 // utilisée pour le développement et les tests avant 

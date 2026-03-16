@@ -1,4 +1,4 @@
 export const environment = {
     production: false,
-    limit: 3,
+    limit: 2,
 };

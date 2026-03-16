@@ -20,7 +20,7 @@
       <div class="row">
         <div class="col-md-4 mb-3">
           <label class="form-label text-muted">Filtrer par statut</label>
-          <select class="form-select" [(ngModel)]="filter.statut" (change)="onFilterStatusChange()" id="filterStatus">
+          <select class="form-select" [(ngModel)]="filter.statut" (change)="onFilterStatusAndSpecialiteChange()" id="filterStatus">
             <option value="">Tous les statuts</option>
             <option value="En attente">En attente</option>
             <option value="Acceptée">Acceptée</option>
@@ -29,7 +29,7 @@
         </div>
         <div class="col-md-4 mb-3">
           <label class="form-label text-muted">Filtrer par spécialité</label>
-          <select class="form-select" [(ngModel)]="filter.specialite" (change)="onFilterSpecialiteChange()"
+          <select class="form-select" [(ngModel)]="filter.specialite" (change)="onFilterStatusAndSpecialiteChange()"
             id="filterSpecialite">
             <option value="">Toutes les spécialités</option>
             <option>Cardiologie</option>
@@ -64,22 +64,11 @@
               <td>{{ $demandes.specialite }}</td>
               <td>{{ $demandes.dateDemande }}</td>
               <td>{{ $demandes.heure }}</td>
-              <td>
-                @switch ($demandes.statut) {
-                  @case('En attente') {
-                  <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split"></i> {{ $demandes.statut }}
-                  </span>
-                  }
-                  @case('Acceptée') {
-                  <span class="badge bg-success"><i class="bi bi-check-circle"></i> {{ $demandes.statut }} </span>
-                  }
-                  @case('Refusée') {
-                  <span class="badge bg-danger"><i class="bi bi-x-circle"></i> {{ $demandes.statut }} </span>
-                  }
-                  @default {
-                  <span class="badge bg-secondary"><i class="bi bi-question-circle"></i> {{ $demandes.statut }} </span>
-                  }
-                }
+              <td [ngSwitch]="$demandes.statut">
+                <span *ngSwitchCase="'En attente'" class="badge bg-warning text-dark"><i class="bi bi-hourglass-split"></i> {{ $demandes.statut }}</span>
+                <span *ngSwitchCase="'Acceptée'" class="badge bg-success"><i class="bi bi-check-circle"></i> {{ $demandes.statut }}</span>
+                <span *ngSwitchCase="'Refusée'" class="badge bg-danger"><i class="bi bi-x-circle"></i> {{ $demandes.statut }}</span>
+                <span *ngSwitchDefault class="badge bg-secondary"><i class="bi bi-question-circle"></i> {{ $demandes.statut }}</span>
               </td>
               <td>
                 <button class="btn btn-sm btn-outline-primary">
@@ -94,16 +83,16 @@
       <!-- Pagination -->
       <nav class="mt-4">
         <ul class="pagination justify-content-center">
-          <li class="page-item disabled">
-            <a class="page-link" href="#">Précédent</a>
+          <li class="page-item" [class.disabled]="desactivePrecedentPage">
+            <a class="page-link" href="#" (click)="onPageChange(demandesResponse.currentPage - 1); $event.preventDefault()">Précédent</a>
           </li>
           @for(indexPage of demandesResponse.pages; track indexPage){
-          <li class="page-item active" [class.active]="indexPage === demandesResponse.currentPage">
-            <a class="page-link" href="#">{{ indexPage }}</a>
+          <li class="page-item" [class.active]="indexPage === demandesResponse.currentPage">
+            <a class="page-link" href="#" (click)="onPageChange(indexPage); $event.preventDefault()">{{ indexPage }}</a>
           </li>
           }
-          <li class="page-item">
-            <a class="page-link" href="#">Suivant</a>
+          <li class="page-item" [class.disabled]="desactiveSuivantPage">
+            <a class="page-link" href="#" (click)="onPageChange(demandesResponse.currentPage + 1); $event.preventDefault()">Suivant</a>
           </li>
         </ul>
       </nav>
