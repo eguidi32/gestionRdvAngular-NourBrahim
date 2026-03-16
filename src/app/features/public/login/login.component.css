@@ -152,3 +152,8 @@
     font-size: 20px;
   }
 }
+
+.btn-connect:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

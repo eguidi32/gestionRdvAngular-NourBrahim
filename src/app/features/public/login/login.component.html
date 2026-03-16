@@ -10,50 +10,34 @@
 
     <div class="login-form">
       <h2 class="form-title">Se connecter</h2>
-      
+
       <form #formCtrl="ngForm" (ngSubmit)="Onlogin(formCtrl)">
         <div class="form-group">
           <label for="login">Login</label>
-          <input 
-            type="text" 
-            id="login" 
-            name="email"
-            class="form-control" 
-            placeholder="Email ou nom d'utilisateur"
-            required
-            #loginCtrl="ngModel"
-            [(ngModel)]="UserLogin.email"
-            [ngClass]="{
+          <input type="text" id="login" name="email" class="form-control" placeholder="Email ou nom d'utilisateur"
+            required #loginCtrl="ngModel" [(ngModel)]="UserLogin.email" [ngClass]="{
               'is-invalid': isFieldInvalid('email', formCtrl),
               'is-valid': !isFieldInvalid('email', formCtrl)
             }" />
           @if(isFieldInvalid('email', formCtrl)) {
-            @if(loginCtrl.errors?.['required']) {
-              <div class="text-danger mt-1">Le login est requis.</div>
-            }
+          @if(loginCtrl.errors?.['required']) {
+          <div class="text-danger mt-1">Le login est requis.</div>
+          }
           }
         </div>
-        
+
         <div class="form-group">
           <label for="password">Mot de passe</label>
-          <input 
-            type="password" 
-            id="password" 
-            name="password"
-            class="form-control" 
-            placeholder="Mot de passe"
-            required
-            minlength="6"
-            #passwordCtrl="ngModel"
-            [(ngModel)]="UserLogin.password"
+          <input type="password" id="password" name="password" class="form-control" placeholder="Mot de passe" required
+            minlength="6" #passwordCtrl="ngModel" [(ngModel)]="UserLogin.password"
             [class.is-invalid]="isFieldInvalid('password', formCtrl)" />
           @if(isFieldInvalid('password', formCtrl)) {
-            @if(passwordCtrl.errors?.['required']) {
-              <div class="text-danger mt-1">Le mot de passe est requis.</div>
-            }
-            @if(passwordCtrl.errors?.['minlength']) {
-              <div class="text-danger mt-1">Le mot de passe doit comporter au moins 6 caractères.</div>
-            }
+          @if(passwordCtrl.errors?.['required']) {
+          <div class="text-danger mt-1">Le mot de passe est requis.</div>
+          }
+          @if(passwordCtrl.errors?.['minlength']) {
+          <div class="text-danger mt-1">Le mot de passe doit comporter au moins 6 caractères.</div>
+          }
           }
         </div>
 
@@ -61,10 +45,8 @@
           <a href="#" class="link">Mot de passe oublié?</a>
         </div>
 
-        <button 
-          type="submit" 
-          class="btn-connect"
-          [disabled]="formCtrl.invalid">
+        <button type="submit" class="btn-connect"
+          [disabled]="!UserLogin.email.trim() || !UserLogin.password.trim() || formCtrl.invalid">
           Se connecter
         </button>
 
