@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DemandeListeRVResponseModel, DemandeRVFilterModel } from '@models';
-import { DemandeService } from '@services/demande.service';
 import { FormsModule } from '@angular/forms';
 import { NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import { DemandeMockService } from '../services/demande.mock.services';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-list-demande',
@@ -14,19 +15,28 @@ import { NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 export class ListDemandeComponent implements OnInit, OnDestroy {
   title = "Mes demandes de rendez-vous";
   demandesResponse? : DemandeListeRVResponseModel;
-
+  private subscription?: Subscription;
   filter:DemandeRVFilterModel = {
     statut: 'En attente',
     specialite: ''
   };
-  constructor(private demandeService: DemandeService) {
+  constructor(private demandeService: DemandeMockService) {
 
   }
   ngOnDestroy(): void {
-    alert("ListDemandeComponent est détruit");
+    this.subscription?.unsubscribe();  
   }
   private loadDemandes(): void {
-    this.demandesResponse = this.demandeService.getDemandesRv(this.filter);
+    this.subscription = this.demandeService.getDemandesRv(this.filter).subscribe({
+      next: (response : DemandeListeRVResponseModel) => {
+        this.demandesResponse = response;
+      },
+      error: (err) => {
+        console.error("Erreur lors du chargement des demandes de rendez-vous", err);
+      },
+      complete: () => {console.log("Chargement des demandes de rendez-vous terminé");
+      }
+    });
   }
   ngOnInit(): void {
     this.loadDemandes();
