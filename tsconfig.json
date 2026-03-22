@@ -3,6 +3,8 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
+    "rootDir": "./src",
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,
@@ -16,7 +18,24 @@
     "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "ES2022"
+    "module": "ES2022",
+    "paths": {
+      "@mocks": ["src/app/mocks"],
+      "@mocks/*": ["src/app/mocks/*"],
+      "@core": ["src/app/core"],
+      "@core/*": ["src/app/core/*"],
+      "@features": ["src/app/features"],
+      "@features/*": ["src/app/features/*"],
+      "@environments": ["src/environments/environment"],
+      "@environments/*": ["src/environments/*"],
+      "@models": ["src/app/features/private/models"],
+      "@models/*": ["src/app/features/private/models/*"],
+      "@services": ["src/app/features/private/demande-rv/services"],
+      "@services/*": ["src/app/features/private/demande-rv/services/*"],
+      "@layout": ["src/app/layout"],
+      "@layout/*": ["src/app/layout/*"]
+    }
+
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
